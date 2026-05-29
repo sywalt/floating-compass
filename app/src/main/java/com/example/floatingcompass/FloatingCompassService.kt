@@ -1,28 +1,36 @@
 package com.example.floatingcompass
 
+import android.Manifest
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PixelFormat
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class FloatingCompassService : Service(), SensorEventListener {
+class FloatingCompassService : Service(), SensorEventListener, LocationListener {
 
     private lateinit var windowManager: WindowManager
     private lateinit var floatingView: View
     private lateinit var sensorManager: SensorManager
+    private var locationManager: LocationManager? = null
     private var accelerometer: Sensor? = null
     private var magnetometer: Sensor? = null
 
@@ -33,6 +41,14 @@ class FloatingCompassService : Service(), SensorEventListener {
     private var hasMagnetic = false
     private var viewAttached = false
 
+    // 模式
+    private var mode = MainActivity.MODE_COMPASS
+    private var targetLat = 0.0
+    private var targetLng = 0.0
+    private var currentLat = 0.0
+    private var currentLng = 0.0
+    private var hasLocation = false
+
     private lateinit var compassNeedle: ImageView
     private lateinit var compassDial: ImageView
     private lateinit var infoBar: LinearLayout
@@ -42,12 +58,21 @@ class FloatingCompassService : Service(), SensorEventListener {
 
     private val sizes = listOf(100, 160, 220)
     private var sizeIndex = 1
-
     private var clickCount = 0
     private var lastClickTime = 0L
     private val TRIPLE_CLICK_MS = 600L
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent?.let {
+            mode = it.getStringExtra(MainActivity.EXTRA_MODE) ?: MainActivity.MODE_COMPASS
+            targetLat = it.getDoubleExtra(MainActivity.EXTRA_TARGET_LAT, 0.0)
+            targetLng = it.getDoubleExtra(MainActivity.EXTRA_TARGET_LNG, 0.0)
+        }
+        if (mode == MainActivity.MODE_TARGET) startLocationUpdates()
+        return START_STICKY
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -66,6 +91,25 @@ class FloatingCompassService : Service(), SensorEventListener {
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
     }
 
+    private fun startLocationUpdates() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) return
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        try {
+            locationManager?.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1f, this)
+            locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 1f, this)
+            // 用最后已知位置先初始化
+            locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let { updateLocation(it) }
+            locationManager?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)?.let { updateLocation(it) }
+        } catch (e: Exception) { e.printStackTrace() }
+    }
+
+    private fun updateLocation(location: Location) {
+        currentLat = location.latitude
+        currentLng = location.longitude
+        hasLocation = true
+    }
+
     private fun dp(value: Int): Int =
         (value * resources.displayMetrics.density).roundToInt()
 
@@ -79,9 +123,11 @@ class FloatingCompassService : Service(), SensorEventListener {
         tvDegree      = floatingView.findViewById(R.id.tvDegree)
         tvDirection   = floatingView.findViewById(R.id.tvDirection)
 
-        if (magnetometer == null) {
-            tvDegree.text = "N/A"
-            tvDirection.text = "无磁力计"
+        if (magnetometer == null && mode == MainActivity.MODE_COMPASS) {
+            tvDegree.text = "N/A"; tvDirection.text = "无磁力计"
+        }
+        if (mode == MainActivity.MODE_TARGET) {
+            tvDirection.text = "获取位置..."
         }
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -96,8 +142,7 @@ class FloatingCompassService : Service(), SensorEventListener {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = 40
-            y = 160
+            x = 40; y = 160
         }
 
         setSizeOnViews(sizeIndex)
@@ -117,14 +162,12 @@ class FloatingCompassService : Service(), SensorEventListener {
                     val dx = (event.rawX - initTX).toInt()
                     val dy = (event.rawY - initTY).toInt()
                     if (abs(dx) > 8 || abs(dy) > 8) dragging = true
-                    windowParams.x = initX + dx
-                    windowParams.y = initY + dy
+                    windowParams.x = initX + dx; windowParams.y = initY + dy
                     if (viewAttached) windowManager.updateViewLayout(floatingView, windowParams)
                     true
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (!dragging) handleClick()
-                    true
+                    if (!dragging) handleClick(); true
                 }
                 else -> false
             }
@@ -140,8 +183,7 @@ class FloatingCompassService : Service(), SensorEventListener {
     private fun handleClick() {
         val now = System.currentTimeMillis()
         if (now - lastClickTime > TRIPLE_CLICK_MS) clickCount = 0
-        clickCount++
-        lastClickTime = now
+        clickCount++; lastClickTime = now
         if (clickCount >= 3) {
             clickCount = 0
             sizeIndex = (sizeIndex + 1) % sizes.size
@@ -152,25 +194,11 @@ class FloatingCompassService : Service(), SensorEventListener {
 
     private fun setSizeOnViews(index: Int) {
         val sizePx = dp(sizes[index])
-
-        // 表盘和指针用 FrameLayout.LayoutParams（它们在 FrameLayout 里）
-        val dialLp = FrameLayout.LayoutParams(sizePx, sizePx)
-        compassDial.layoutParams = dialLp
-
-        val needleLp = FrameLayout.LayoutParams(sizePx, sizePx)
-        compassNeedle.layoutParams = needleLp
-
-        // infoBar 用 LinearLayout.LayoutParams（它在 LinearLayout 里）
-        val barLp = LinearLayout.LayoutParams(sizePx, LinearLayout.LayoutParams.WRAP_CONTENT)
-        infoBar.layoutParams = barLp
-
-        val textSize = when (index) {
-            0    -> 10f
-            1    -> 13f
-            else -> 17f
-        }
-        tvDegree.textSize    = textSize
-        tvDirection.textSize = textSize
+        compassDial.layoutParams   = FrameLayout.LayoutParams(sizePx, sizePx)
+        compassNeedle.layoutParams = FrameLayout.LayoutParams(sizePx, sizePx)
+        infoBar.layoutParams = LinearLayout.LayoutParams(sizePx, LinearLayout.LayoutParams.WRAP_CONTENT)
+        val textSize = when (index) { 0 -> 10f; 1 -> 13f; else -> 17f }
+        tvDegree.textSize = textSize; tvDirection.textSize = textSize
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -188,20 +216,51 @@ class FloatingCompassService : Service(), SensorEventListener {
         if (!hasGravity || !hasMagnetic) return
 
         val R = FloatArray(9); val I = FloatArray(9)
-        if (SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) {
-            val orientation = FloatArray(3)
-            SensorManager.getOrientation(R, orientation)
-            val target = ((Math.toDegrees(orientation[0].toDouble()).toFloat() + 360) % 360)
-            var delta = target - currentAzimuth
-            if (delta > 180) delta -= 360
-            if (delta < -180) delta += 360
-            currentAzimuth = (currentAzimuth + delta * 0.15f + 360) % 360
+        if (!SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) return
+        val orientation = FloatArray(3)
+        SensorManager.getOrientation(R, orientation)
+        val deviceHeading = ((Math.toDegrees(orientation[0].toDouble()).toFloat() + 360) % 360)
 
-            compassNeedle.rotation = -currentAzimuth
-            tvDegree.text    = "${currentAzimuth.toInt()}°"
-            tvDirection.text = getDirection(currentAzimuth)
+        if (mode == MainActivity.MODE_TARGET && hasLocation) {
+            // 计算当前位置到目标的方位角
+            val fromLoc = android.location.Location("").apply { latitude = currentLat; longitude = currentLng }
+            val toLoc   = android.location.Location("").apply { latitude = targetLat;  longitude = targetLng }
+            val bearingToTarget = (fromLoc.bearingTo(toLoc) + 360) % 360
+
+            // 指针需要指向目标：目标方位角 - 当前朝向 = 指针旋转角
+            val pointerAngle = bearingToTarget - deviceHeading
+            smoothRotate(pointerAngle)
+
+            val dist = fromLoc.distanceTo(toLoc)
+            tvDegree.text    = formatDistance(dist)
+            tvDirection.text = getDirection(bearingToTarget)
+        } else {
+            // 普通指南针模式
+            smoothRotate(-deviceHeading)
+            tvDegree.text    = "${deviceHeading.toInt()}°"
+            tvDirection.text = getDirection(deviceHeading)
         }
     }
+
+    private fun smoothRotate(targetAngle: Float) {
+        var delta = targetAngle - currentAzimuth
+        if (delta > 180) delta -= 360
+        if (delta < -180) delta += 360
+        currentAzimuth += delta * 0.15f
+        compassNeedle.rotation = currentAzimuth
+    }
+
+    private fun formatDistance(meters: Float): String = when {
+        meters < 1000 -> "${meters.toInt()}m"
+        else -> "${"%.1f".format(meters / 1000)}km"
+    }
+
+    // LocationListener
+    override fun onLocationChanged(location: Location) { updateLocation(location) }
+    @Deprecated("Deprecated in Java")
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onProviderEnabled(provider: String) {}
+    override fun onProviderDisabled(provider: String) {}
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
@@ -218,6 +277,7 @@ class FloatingCompassService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         sensorManager.unregisterListener(this)
+        locationManager?.removeUpdates(this)
         if (viewAttached) {
             try { windowManager.removeView(floatingView) } catch (e: Exception) { e.printStackTrace() }
             viewAttached = false

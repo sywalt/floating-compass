@@ -1,71 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp"
     android:background="#0D1117">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="&#129517;"
-        android:textSize="72sp"
-        android:layout_marginBottom="12dp"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="28dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&#129517;"
+            android:textSize="64sp"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="全局悬浮 · 可自由拖动"
-        android:textSize="13sp"
-        android:textColor="#8B949E"
-        android:layout_marginBottom="36dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="4dp"/>
 
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/status_denied"
-        android:textSize="14sp"
-        android:textColor="#8B949E"
-        android:layout_marginBottom="36dp"/>
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_denied"
+            android:textSize="13sp"
+            android:textColor="#8B949E"
+            android:layout_marginBottom="28dp"/>
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="240dp"
-        android:layout_height="52dp"
-        android:text="@string/btn_start"
-        android:textSize="15sp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#238636"
-        android:layout_marginBottom="12dp"/>
+        <!-- 模式选择 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:background="#161B22"
+            android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="240dp"
-        android:layout_height="52dp"
-        android:text="@string/btn_stop"
-        android:textSize="15sp"
-        android:backgroundTint="#21262D"
-        android:textColor="#8B949E"/>
+            <Button
+                android:id="@+id/btnModeCompass"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="🧭 指南针"
+                android:textSize="13sp"
+                android:backgroundTint="#238636"
+                android:textColor="#FFFFFF"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hint_text"
-        android:textSize="12sp"
-        android:textColor="#484F58"
-        android:gravity="center"
-        android:layout_marginTop="36dp"/>
+            <Button
+                android:id="@+id/btnModeTarget"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="📍 目标导航"
+                android:textSize="13sp"
+                android:backgroundTint="#21262D"
+                android:textColor="#8B949E"/>
 
-</LinearLayout>
+        </LinearLayout>
+
+        <!-- 目标坐标输入区（默认隐藏） -->
+        <LinearLayout
+            android:id="@+id/layoutTarget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#161B22"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📍 目标坐标"
+                android:textColor="#C9A227"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <EditText
+                android:id="@+id/etLat"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="目标纬度（如 39.9042）"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#484F58"
+                android:background="#0D1117"
+                android:padding="10dp"
+                android:inputType="numberDecimal|numberSigned"
+                android:layout_marginBottom="10dp"/>
+
+            <EditText
+                android:id="@+id/etLng"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="目标经度（如 116.4074）"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#484F58"
+                android:background="#0D1117"
+                android:padding="10dp"
+                android:inputType="numberDecimal|numberSigned"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- 预设快捷按钮 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="快捷城市："
+                android:textColor="#8B949E"
+                android:textSize="12sp"
+                android:layout_marginBottom="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btnBeijing"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="北京" android:textSize="12sp"
+                    android:backgroundTint="#21262D" android:textColor="#8B949E"
+                    android:layout_marginEnd="6dp"/>
+
+                <Button android:id="@+id/btnShanghai"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="上海" android:textSize="12sp"
+                    android:backgroundTint="#21262D" android:textColor="#8B949E"
+                    android:layout_marginEnd="6dp"/>
+
+                <Button android:id="@+id/btnGuangzhou"
+                    android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1"
+                    android:text="广州" android:textSize="12sp"
+                    android:backgroundTint="#21262D" android:textColor="#8B949E"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="240dp"
+            android:layout_height="52dp"
+            android:text="@string/btn_start"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#238636"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="240dp"
+            android:layout_height="52dp"
+            android:text="@string/btn_stop"
+            android:textSize="15sp"
+            android:backgroundTint="#21262D"
+            android:textColor="#8B949E"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_text"
+            android:textSize="12sp"
+            android:textColor="#484F58"
+            android:gravity="center"
+            android:layout_marginTop="28dp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -10,5 +10,13 @@
     <string name="btn_start">启动悬浮指南针</string>
     <string name="btn_stop">关闭悬浮指南针</string>
     <string name="hint_text">启动后切换到其他 App，指南针会保持显示</string>
-    <string name="no_sensor">此设备没有磁力计，无法使用指南针</string>
+    <string name="no_sensor">⚠️ 此设备无磁力计，使用目标模式仍可用</string>
+    <string name="mode_compass">指南针模式</string>
+    <string name="mode_target">目标模式</string>
+    <string name="target_hint">输入目标坐标（纬度，经度）</string>
+    <string name="target_lat">目标纬度</string>
+    <string name="target_lng">目标经度</string>
+    <string name="btn_set_target">设置目标并启动</string>
+    <string name="location_waiting">获取位置中...</string>
+    <string name="location_denied">需要定位权限</string>
 </resources>
