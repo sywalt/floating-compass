@@ -127,7 +127,8 @@ class FloatingCompassService : Service(), SensorEventListener, LocationListener 
             tvDegree.text = "N/A"; tvDirection.text = "无磁力计"
         }
         if (mode == MainActivity.MODE_TARGET) {
-            tvDirection.text = "获取位置..."
+            tvDirection.text = "等待GPS定位..."
+            tvDegree.text = "---"
         }
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -197,8 +198,10 @@ class FloatingCompassService : Service(), SensorEventListener, LocationListener 
         compassDial.layoutParams   = FrameLayout.LayoutParams(sizePx, sizePx)
         compassNeedle.layoutParams = FrameLayout.LayoutParams(sizePx, sizePx)
         infoBar.layoutParams = LinearLayout.LayoutParams(sizePx, LinearLayout.LayoutParams.WRAP_CONTENT)
-        val textSize = when (index) { 0 -> 10f; 1 -> 13f; else -> 17f }
-        tvDegree.textSize = textSize; tvDirection.textSize = textSize
+        val dirSize = when (index) { 0 -> 12f; 1 -> 16f; else -> 20f }
+        val degSize = when (index) { 0 -> 10f; 1 -> 13f; else -> 16f }
+        tvDirection.textSize = dirSize
+        tvDegree.textSize    = degSize
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -232,13 +235,19 @@ class FloatingCompassService : Service(), SensorEventListener, LocationListener 
             smoothRotate(pointerAngle)
 
             val dist = fromLoc.distanceTo(toLoc)
-            tvDegree.text    = formatDistance(dist)
-            tvDirection.text = getDirection(bearingToTarget)
+            // 第一行：目标在哪个方向
+            tvDirection.text = "目标在 ${getDirection(bearingToTarget)}"
+            // 第二行：距离
+            tvDegree.text    = "距离 ${formatDistance(dist)}"
+        } else if (mode == MainActivity.MODE_TARGET && !hasLocation) {
+            smoothRotate(-deviceHeading)
+            tvDirection.text = "等待GPS定位..."
+            tvDegree.text    = "${deviceHeading.toInt()}°"
         } else {
             // 普通指南针模式
             smoothRotate(-deviceHeading)
-            tvDegree.text    = "${deviceHeading.toInt()}°"
             tvDirection.text = getDirection(deviceHeading)
+            tvDegree.text    = "${deviceHeading.toInt()}°"
         }
     }
 

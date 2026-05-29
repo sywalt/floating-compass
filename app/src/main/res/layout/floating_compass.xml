@@ -24,41 +24,43 @@
 
     </FrameLayout>
 
-    <!-- 文字区域：圆形正下方，透明背景 -->
+    <!-- 信息区域：圆形正下方 -->
     <LinearLayout
         android:id="@+id/infoBar"
         android:layout_width="200dp"
-        android:layout_height="32dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingTop="6dp"
         android:background="@android:color/transparent">
 
-        <TextView
-            android:id="@+id/tvDegree"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0°"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:shadowColor="#DD000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="4"
-            android:layout_marginEnd="8dp"/>
-
+        <!-- 第一行：目标在哪个方向（目标模式）或 当前朝向角度（指南针模式） -->
         <TextView
             android:id="@+id/tvDirection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="北"
-            android:textColor="#C9A227"
-            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:shadowColor="#DD000000"
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="4"/>
+
+        <!-- 第二行：距离（目标模式）或 角度（指南针模式） -->
+        <TextView
+            android:id="@+id/tvDegree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0°"
+            android:textColor="#C9A227"
+            android:textSize="14sp"
+            android:shadowColor="#DD000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="4"
+            android:layout_marginTop="2dp"/>
 
     </LinearLayout>
 
