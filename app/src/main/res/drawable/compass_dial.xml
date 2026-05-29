@@ -9,102 +9,68 @@
     <path android:fillColor="#FFFFFF"
         android:pathData="M100,2 C153.019,2 198,46.981 198,100 C198,153.019 153.019,198 100,198 C46.981,198 2,153.019 2,100 C2,46.981 46.981,2 100,2 Z"/>
 
-    <!-- 浅灰外边框 -->
+    <!-- 灰色外边框 -->
     <path android:fillColor="#00000000"
-        android:strokeColor="#CCCCCC"
-        android:strokeWidth="3"
+        android:strokeColor="#CCCCCC" android:strokeWidth="3"
         android:pathData="M100,4 C152.02,4 196,47.98 196,100 C196,152.02 152.02,196 100,196 C47.98,196 4,152.02 4,100 C4,47.98 47.98,4 100,4 Z"/>
 
-    <!-- 内圈装饰线 -->
+    <!-- 内圈 -->
     <path android:fillColor="#00000000"
-        android:strokeColor="#DDDDDD"
-        android:strokeWidth="1"
-        android:pathData="M100,14 C146.944,14 186,53.056 186,100 C186,146.944 146.944,186 100,186 C53.056,186 14,146.944 14,100 C14,53.056 53.056,14 100,14 Z"/>
+        android:strokeColor="#EEEEEE" android:strokeWidth="1"
+        android:pathData="M100,16 C145.84,16 184,54.16 184,100 C184,145.84 145.84,184 100,184 C54.16,184 16,145.84 16,100 C16,54.16 54.16,16 100,16 Z"/>
 
-    <!-- N(0) 大刻度 红色 -->
-    <path android:strokeColor="#FF3B30" android:strokeWidth="3" android:pathData="M100,6 L100,18"/>
-    <!-- 10 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M117.36,6.97 L114.27,18.57"/>
-    <!-- 20 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M133.56,10.84 L127.47,21.84"/>
-    <!-- 30 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M148.0,17.86 L141.5,29.86"/>
-    <!-- 40 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M160.36,27.86 L153.36,38.36"/>
-    <!-- 50 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M170.14,40.44 L162.14,49.44"/>
-    <!-- E(90) 大刻度 -->
-    <path android:strokeColor="#333333" android:strokeWidth="3" android:pathData="M194,100 L182,100"/>
-    <!-- 60 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M182.14,59.56 L171.14,65.56"/>
-    <!-- 70 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M189.16,72.44 L177.66,75.94"/>
-    <!-- 80 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M193.03,82.64 L181.03,85.14"/>
-    <!-- 100 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M193.03,117.36 L181.03,114.86"/>
-    <!-- 110 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M189.16,127.56 L177.66,124.06"/>
-    <!-- 120 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M182.14,140.44 L171.14,134.44"/>
-    <!-- 130 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M170.14,159.56 L162.14,150.56"/>
-    <!-- 140 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M160.36,172.14 L153.36,161.64"/>
-    <!-- S(180) 大刻度 -->
-    <path android:strokeColor="#333333" android:strokeWidth="3" android:pathData="M100,194 L100,182"/>
-    <!-- 150 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M148.0,182.14 L141.5,170.14"/>
-    <!-- 160 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M133.56,189.16 L127.47,178.16"/>
-    <!-- 170 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M117.36,193.03 L114.27,181.43"/>
-    <!-- 190 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M82.64,193.03 L85.73,181.43"/>
-    <!-- 200 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M66.44,189.16 L72.53,178.16"/>
-    <!-- 210 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M52.0,182.14 L58.5,170.14"/>
-    <!-- 220 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M39.64,172.14 L46.64,161.64"/>
-    <!-- 230 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M29.86,159.56 L37.86,150.56"/>
-    <!-- W(270) 大刻度 -->
-    <path android:strokeColor="#333333" android:strokeWidth="3" android:pathData="M6,100 L18,100"/>
-    <!-- 240 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M17.86,140.44 L28.86,134.44"/>
-    <!-- 250 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M10.84,127.56 L22.34,124.06"/>
-    <!-- 260 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M6.97,117.36 L18.97,114.86"/>
-    <!-- 280 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M6.97,82.64 L18.97,85.14"/>
-    <!-- 290 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M10.84,72.44 L22.34,75.94"/>
-    <!-- 300 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M17.86,59.56 L28.86,65.56"/>
-    <!-- 310 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M29.86,40.44 L37.86,49.44"/>
-    <!-- 320 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M39.64,27.86 L46.64,38.36"/>
-    <!-- 330 中刻度 -->
-    <path android:strokeColor="#888888" android:strokeWidth="2" android:pathData="M52.0,17.86 L58.5,29.86"/>
-    <!-- 340 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M66.44,10.84 L72.53,21.84"/>
-    <!-- 350 -->
-    <path android:strokeColor="#AAAAAA" android:strokeWidth="1.5" android:pathData="M82.64,6.97 L85.73,18.57"/>
+    <!-- 刻度 每10度小刻，30度中刻，90度大刻 -->
+    <path android:strokeColor="#FF3B30" android:strokeWidth="3"  android:pathData="M100,6 L100,20"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M117.36,6.97 L114.27,19.57"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M133.56,10.84 L128.47,22.84"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M148.0,17.86 L142.5,29.86"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M160.36,27.86 L154.36,38.36"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M170.14,40.44 L163.14,50.44"/>
+    <path android:strokeColor="#444444" android:strokeWidth="3"   android:pathData="M194,100 L180,100"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M182.14,59.56 L170.14,65.56"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M189.16,72.44 L177.66,76.44"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M193.03,82.64 L181.03,85.64"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M193.03,117.36 L181.03,114.36"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M189.16,127.56 L177.66,123.56"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M182.14,140.44 L170.14,134.44"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M170.14,159.56 L163.14,149.56"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M160.36,172.14 L154.36,161.64"/>
+    <path android:strokeColor="#444444" android:strokeWidth="3"   android:pathData="M100,194 L100,180"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M148.0,182.14 L142.5,170.14"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M133.56,189.16 L128.47,177.16"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M117.36,193.03 L114.27,180.43"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M82.64,193.03 L85.73,180.43"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M66.44,189.16 L71.53,177.16"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M52.0,182.14 L57.5,170.14"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M39.64,172.14 L45.64,161.64"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M29.86,159.56 L36.86,149.56"/>
+    <path android:strokeColor="#444444" android:strokeWidth="3"   android:pathData="M6,100 L20,100"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M17.86,140.44 L29.86,134.44"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M10.84,127.56 L22.34,123.56"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M6.97,117.36 L18.97,114.36"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M6.97,82.64 L18.97,85.64"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M10.84,72.44 L22.34,76.44"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M17.86,59.56 L29.86,65.56"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M29.86,40.44 L36.86,50.44"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M39.64,27.86 L45.64,38.36"/>
+    <path android:strokeColor="#888888" android:strokeWidth="2"   android:pathData="M52.0,17.86 L57.5,29.86"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M66.44,10.84 L71.53,22.84"/>
+    <path android:strokeColor="#BBBBBB" android:strokeWidth="1.5" android:pathData="M82.64,6.97 L85.73,19.57"/>
 
-    <!-- 方向字母 N 红色 -->
-    <path android:fillColor="#FF3B30"
-        android:pathData="M96,22 L96,32 L104,22 L104,32"/>
-    <!-- 方向字母 S 深灰 -->
-    <path android:fillColor="#00000000" android:strokeColor="#333333" android:strokeWidth="1.5"
-        android:pathData="M97,170 C94,170 94,174 97,174 L103,174 C106,174 106,178 103,178 L97,178"/>
-    <!-- 方向字母 E 深灰 -->
-    <path android:fillColor="#00000000" android:strokeColor="#333333" android:strokeWidth="1.5"
-        android:pathData="M170,96 L176,96 M170,100 L175,100 M170,104 L176,104"/>
-    <!-- 方向字母 W 深灰 -->
-    <path android:fillColor="#00000000" android:strokeColor="#333333" android:strokeWidth="1.5"
-        android:pathData="M22,96 L25,104 L28,98 L31,104 L34,96"/>
+    <!-- 北：红色小三角指示 + 字样用方块代替，实际用textView叠加 -->
+    <!-- 北 位置的红色三角标记 -->
+    <path android:fillColor="#FF3B30" android:pathData="M100,7 L104,17 L100,15 L96,17 Z"/>
+
+    <!-- 东 位置圆点 -->
+    <path android:fillColor="#444444"
+        android:pathData="M186,97 C187.657,97 189,98.343 189,100 C189,101.657 187.657,103 186,103 C184.343,103 183,101.657 183,100 C183,98.343 184.343,97 186,97 Z"/>
+
+    <!-- 南 位置圆点 -->
+    <path android:fillColor="#444444"
+        android:pathData="M97,183 C97,181.343 98.343,180 100,180 C101.657,180 103,181.343 103,183 C103,184.657 101.657,186 100,186 C98.343,186 97,184.657 97,183 Z"/>
+
+    <!-- 西 位置圆点 -->
+    <path android:fillColor="#444444"
+        android:pathData="M14,97 C15.657,97 17,98.343 17,100 C17,101.657 15.657,103 14,103 C12.343,103 11,101.657 11,100 C11,98.343 12.343,97 14,97 Z"/>
 
 </vector>
