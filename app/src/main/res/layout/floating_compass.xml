@@ -5,72 +5,24 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
-    <!-- 表盘 + 指针 + 方向字叠加 -->
     <FrameLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <!-- 表盘（固定） -->
         <ImageView
             android:id="@+id/compassDial"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:src="@drawable/compass_dial"/>
 
-        <!-- 指针（旋转） -->
         <ImageView
             android:id="@+id/compassNeedle"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:src="@drawable/compass_needle_new"/>
 
-        <!-- 北 红色，正上方 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="北"
-            android:textColor="#FF3B30"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="20dp"/>
-
-        <!-- 南 深灰，正下方 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="南"
-            android:textColor="#444444"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="20dp"/>
-
-        <!-- 东 深灰，右侧 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="东"
-            android:textColor="#444444"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="20dp"/>
-
-        <!-- 西 深灰，左侧 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="西"
-            android:textColor="#444444"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="20dp"/>
-
     </FrameLayout>
 
-    <!-- 下方信息：白色文字 -->
     <LinearLayout
         android:id="@+id/infoBar"
         android:layout_width="200dp"
