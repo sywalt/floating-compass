@@ -100,7 +100,6 @@ class FloatingCompassService : Service(), SensorEventListener {
             y = 160
         }
 
-        // 先设置初始尺寸，不调用 updateViewLayout
         setSizeOnViews(sizeIndex)
 
         var initX = 0; var initY = 0
@@ -154,17 +153,15 @@ class FloatingCompassService : Service(), SensorEventListener {
     private fun setSizeOnViews(index: Int) {
         val sizePx = dp(sizes[index])
 
+        // 表盘和指针用 FrameLayout.LayoutParams（它们在 FrameLayout 里）
         val dialLp = FrameLayout.LayoutParams(sizePx, sizePx)
-        dialLp.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
         compassDial.layoutParams = dialLp
 
         val needleLp = FrameLayout.LayoutParams(sizePx, sizePx)
-        needleLp.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
         compassNeedle.layoutParams = needleLp
 
-        val barLp = FrameLayout.LayoutParams(sizePx, FrameLayout.LayoutParams.WRAP_CONTENT)
-        barLp.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-        barLp.bottomMargin = dp(6)
+        // infoBar 用 LinearLayout.LayoutParams（它在 LinearLayout 里）
+        val barLp = LinearLayout.LayoutParams(sizePx, LinearLayout.LayoutParams.WRAP_CONTENT)
         infoBar.layoutParams = barLp
 
         val textSize = when (index) {

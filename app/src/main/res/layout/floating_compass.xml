@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
-    <!-- 圆形指南针表盘（固定不转） -->
-    <ImageView
-        android:id="@+id/compassDial"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/compass_dial"/>
+    <!-- 圆形表盘区域 -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <!-- 指针（跟随方向旋转） -->
-    <ImageView
-        android:id="@+id/compassNeedle"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/compass_needle_new"/>
+        <ImageView
+            android:id="@+id/compassDial"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/compass_dial"/>
 
-    <!-- 底部信息：透明背景，叠在表盘底部 -->
+        <ImageView
+            android:id="@+id/compassNeedle"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/compass_needle_new"/>
+
+    </FrameLayout>
+
+    <!-- 文字区域：圆形正下方，透明背景 -->
     <LinearLayout
         android:id="@+id/infoBar"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="8dp"
+        android:layout_height="32dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:background="@android:color/transparent">
@@ -36,11 +41,11 @@
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:shadowColor="#99000000"
+            android:shadowColor="#DD000000"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="3"
-            android:layout_marginEnd="6dp"/>
+            android:shadowRadius="4"
+            android:layout_marginEnd="8dp"/>
 
         <TextView
             android:id="@+id/tvDirection"
@@ -50,11 +55,11 @@
             android:textColor="#C9A227"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:shadowColor="#99000000"
+            android:shadowColor="#DD000000"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="3"/>
+            android:shadowRadius="4"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>
