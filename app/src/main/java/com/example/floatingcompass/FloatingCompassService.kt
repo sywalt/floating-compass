@@ -33,6 +33,15 @@ class FloatingCompassService : Service(), SensorEventListener {
     private lateinit var tvDegree: TextView
     private lateinit var tvDirection: TextView
 
+    // 尺寸档位：小(120dp) / 中(200dp) / 大(280dp)
+    private val sizes = listOf(120, 200, 280)
+    private var sizeIndex = 1  // 默认中号
+
+    // 三击检测
+    private var clickCount = 0
+    private var lastClickTime = 0L
+    private val TRIPLE_CLICK_INTERVAL = 600L  // 600ms内三击
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
@@ -47,6 +56,10 @@ class FloatingCompassService : Service(), SensorEventListener {
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
     }
 
+    private fun dp(value: Int): Int {
+        return (value * resources.displayMetrics.density).toInt()
+    }
+
     private fun setupFloatingWindow() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val inflater = LayoutInflater.from(this)
@@ -56,7 +69,6 @@ class FloatingCompassService : Service(), SensorEventListener {
         tvDegree = floatingView.findViewById(R.id.tvDegree)
         tvDirection = floatingView.findViewById(R.id.tvDirection)
 
-        // 检测传感器是否可用
         if (magnetometer == null) {
             tvDegree.text = "N/A"
             tvDirection.text = "无磁力计"
@@ -69,8 +81,8 @@ class FloatingCompassService : Service(), SensorEventListener {
             WindowManager.LayoutParams.TYPE_PHONE
 
         val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            dp(sizes[sizeIndex]),
+            dp(sizes[sizeIndex] + 30),
             layoutType,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -91,19 +103,22 @@ class FloatingCompassService : Service(), SensorEventListener {
                 MotionEvent.ACTION_DOWN -> {
                     initialX = params.x; initialY = params.y
                     initialTouchX = event.rawX; initialTouchY = event.rawY
-                    isDragging = false; true
+                    isDragging = false
+                    true
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = (event.rawX - initialTouchX).toInt()
                     val dy = (event.rawY - initialTouchY).toInt()
-                    if (abs(dx) > 5 || abs(dy) > 5) isDragging = true
+                    if (abs(dx) > 8 || abs(dy) > 8) isDragging = true
                     params.x = initialX + dx
                     params.y = initialY + dy
                     windowManager.updateViewLayout(floatingView, params)
                     true
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (!isDragging) floatingView.performClick()
+                    if (!isDragging) {
+                        handleClick(params)
+                    }
                     true
                 }
                 else -> false
@@ -118,6 +133,51 @@ class FloatingCompassService : Service(), SensorEventListener {
         magnetometer?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME)
         }
+    }
+
+    private fun handleClick(params: WindowManager.LayoutParams) {
+        val now = System.currentTimeMillis()
+        if (now - lastClickTime > TRIPLE_CLICK_INTERVAL) {
+            clickCount = 0
+        }
+        clickCount++
+        lastClickTime = now
+
+        if (clickCount >= 3) {
+            clickCount = 0
+            cycleSize(params)
+        }
+    }
+
+    private fun cycleSize(params: WindowManager.LayoutParams) {
+        sizeIndex = (sizeIndex + 1) % sizes.size
+        val newSizePx = dp(sizes[sizeIndex])
+        params.width = newSizePx
+        params.height = newSizePx + dp(30)
+
+        // 同步缩放表盘和指针
+        val dialView = floatingView.findViewById<ImageView>(R.id.compassDial)
+        val needleView = floatingView.findViewById<ImageView>(R.id.compassNeedle)
+        val infoBar = floatingView.findViewById<View>(R.id.infoBar)
+
+        val lp = ViewGroup.LayoutParams(newSizePx, newSizePx)
+        dialView.layoutParams = lp
+        needleView.layoutParams = ViewGroup.LayoutParams(newSizePx, newSizePx)
+
+        val infoLp = infoBar.layoutParams as ViewGroup.LayoutParams
+        infoLp.width = newSizePx
+        infoBar.layoutParams = infoLp
+
+        // 字号随尺寸变化
+        val textSize = when (sizeIndex) {
+            0 -> 10f   // 小
+            1 -> 14f   // 中
+            else -> 18f // 大
+        }
+        tvDegree.textSize = textSize
+        tvDirection.textSize = textSize
+
+        windowManager.updateViewLayout(floatingView, params)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -152,7 +212,6 @@ class FloatingCompassService : Service(), SensorEventListener {
             currentAzimuth += delta * 0.15f
             currentAzimuth = (currentAzimuth + 360) % 360
 
-            // 表盘固定，指针转动（反转角度使N始终指北）
             compassNeedle.rotation = -currentAzimuth
             tvDegree.text = "${currentAzimuth.toInt()}°"
             tvDirection.text = getDirection(currentAzimuth)
