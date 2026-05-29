@@ -7,12 +7,14 @@
     <path android:fillColor="#1A1A2E"
         android:pathData="M0,0h108v108h-108z"/>
     <path android:fillColor="#FF3B30"
-        android:pathData="M54,20 L59,54 L54,51 L49,54 Z"/>
+        android:pathData="M54,20 L60,54 L54,50 L48,54 Z"/>
     <path android:fillColor="#FFFFFF"
-        android:pathData="M54,88 L59,54 L54,57 L49,54 Z"/>
-    <circle android:fillColor="#FFD700" android:cx="54" android:cy="54" android:r="5"/>
+        android:pathData="M54,88 L60,54 L54,58 L48,54 Z"/>
+    <!-- 中心圆 用path -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M54,49 C56.761,49 59,51.239 59,54 C59,56.761 56.761,59 54,59 C51.239,59 49,56.761 49,54 C49,51.239 51.239,49 54,49 Z"/>
     <path android:fillColor="#00000000"
         android:strokeColor="#FFD700"
         android:strokeWidth="2"
-        android:pathData="M54,15 A39,39 0 1,1 53.99,15 Z"/>
+        android:pathData="M54,16 C76.091,16 92,31.909 92,54 C92,76.091 76.091,92 54,92 C31.909,92 16,76.091 16,54 C16,31.909 31.909,16 54,16 Z"/>
 </vector>

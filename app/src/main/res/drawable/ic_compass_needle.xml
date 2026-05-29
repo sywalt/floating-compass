@@ -5,56 +5,46 @@
     android:viewportWidth="64"
     android:viewportHeight="64">
 
-    <!-- 外圈刻度环 -->
+    <!-- 外圈 -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#FFD700"
-        android:strokeWidth="1"
-        android:pathData="M32,4 A28,28 0 1,1 31.99,4 Z"/>
+        android:strokeWidth="1.5"
+        android:pathData="M32,4 C49.673,4 60,14.327 60,32 C60,49.673 49.673,60 32,60 C14.327,60 4,49.673 4,32 C4,14.327 14.327,4 32,4 Z"/>
 
-    <!-- 北 (红色) 指针 -->
+    <!-- 北（红色）指针 -->
     <path
         android:fillColor="#FF3B30"
-        android:pathData="M32,8 L36,32 L32,30 L28,32 Z"/>
+        android:pathData="M32,8 L37,32 L32,29 L27,32 Z"/>
 
-    <!-- 南 (白色) 指针 -->
+    <!-- 南（白色）指针 -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M32,56 L36,32 L32,34 L28,32 Z"/>
+        android:pathData="M32,56 L37,32 L32,35 L27,32 Z"/>
 
-    <!-- 中心圆 -->
-    <circle
+    <!-- 中心圆用path画 -->
+    <path
         android:fillColor="#FFD700"
-        android:cx="32"
-        android:cy="32"
-        android:r="3.5"/>
+        android:pathData="M32,28.5 C33.933,28.5 35.5,30.067 35.5,32 C35.5,33.933 33.933,35.5 32,35.5 C30.067,35.5 28.5,33.933 28.5,32 C28.5,30.067 30.067,28.5 32,28.5 Z"/>
 
-    <!-- N 标记点 -->
-    <circle
+    <!-- N 点 -->
+    <path
         android:fillColor="#FF3B30"
-        android:cx="32"
-        android:cy="7"
-        android:r="2"/>
+        android:pathData="M32,5 C33.105,5 34,5.895 34,7 C34,8.105 33.105,9 32,9 C30.895,9 30,8.105 30,7 C30,5.895 30.895,5 32,5 Z"/>
 
-    <!-- S 标记点 -->
-    <circle
-        android:fillColor="#AAAAAA"
-        android:cx="32"
-        android:cy="57"
-        android:r="2"/>
+    <!-- E 点 -->
+    <path
+        android:fillColor="#888888"
+        android:pathData="M57,30 C58.105,30 59,30.895 59,32 C59,33.105 58.105,34 57,34 C55.895,34 55,33.105 55,32 C55,30.895 55.895,30 57,30 Z"/>
 
-    <!-- E 标记点 -->
-    <circle
-        android:fillColor="#AAAAAA"
-        android:cx="57"
-        android:cy="32"
-        android:r="2"/>
+    <!-- S 点 -->
+    <path
+        android:fillColor="#888888"
+        android:pathData="M32,55 C33.105,55 34,55.895 34,57 C34,58.105 33.105,59 32,59 C30.895,59 30,58.105 30,57 C30,55.895 30.895,55 32,55 Z"/>
 
-    <!-- W 标记点 -->
-    <circle
-        android:fillColor="#AAAAAA"
-        android:cx="7"
-        android:cy="32"
-        android:r="2"/>
+    <!-- W 点 -->
+    <path
+        android:fillColor="#888888"
+        android:pathData="M7,30 C8.105,30 9,30.895 9,32 C9,33.105 8.105,34 7,34 C5.895,34 5,33.105 5,32 C5,30.895 5.895,30 7,30 Z"/>
 
 </vector>
