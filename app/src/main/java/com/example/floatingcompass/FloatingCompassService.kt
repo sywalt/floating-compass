@@ -31,6 +31,7 @@ class FloatingCompassService : Service(), SensorEventListener {
     private var currentAzimuth = 0f
     private var hasGravity = false
     private var hasMagnetic = false
+    private var viewAttached = false
 
     private lateinit var compassNeedle: ImageView
     private lateinit var compassDial: ImageView
@@ -39,11 +40,9 @@ class FloatingCompassService : Service(), SensorEventListener {
     private lateinit var tvDirection: TextView
     private lateinit var windowParams: WindowManager.LayoutParams
 
-    // 尺寸档位 dp
     private val sizes = listOf(100, 160, 220)
     private var sizeIndex = 1
 
-    // 三击检测
     private var clickCount = 0
     private var lastClickTime = 0L
     private val TRIPLE_CLICK_MS = 600L
@@ -52,8 +51,13 @@ class FloatingCompassService : Service(), SensorEventListener {
 
     override fun onCreate() {
         super.onCreate()
-        setupSensors()
-        setupFloatingWindow()
+        try {
+            setupSensors()
+            setupFloatingWindow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            stopSelf()
+        }
     }
 
     private fun setupSensors() {
@@ -96,7 +100,8 @@ class FloatingCompassService : Service(), SensorEventListener {
             y = 160
         }
 
-        applySize()
+        // 先设置初始尺寸，不调用 updateViewLayout
+        setSizeOnViews(sizeIndex)
 
         var initX = 0; var initY = 0
         var initTX = 0f; var initTY = 0f
@@ -115,7 +120,7 @@ class FloatingCompassService : Service(), SensorEventListener {
                     if (abs(dx) > 8 || abs(dy) > 8) dragging = true
                     windowParams.x = initX + dx
                     windowParams.y = initY + dy
-                    windowManager.updateViewLayout(floatingView, windowParams)
+                    if (viewAttached) windowManager.updateViewLayout(floatingView, windowParams)
                     true
                 }
                 MotionEvent.ACTION_UP -> {
@@ -127,6 +132,7 @@ class FloatingCompassService : Service(), SensorEventListener {
         }
 
         windowManager.addView(floatingView, windowParams)
+        viewAttached = true
 
         accelerometer?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME) }
         magnetometer?.let  { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME) }
@@ -140,36 +146,34 @@ class FloatingCompassService : Service(), SensorEventListener {
         if (clickCount >= 3) {
             clickCount = 0
             sizeIndex = (sizeIndex + 1) % sizes.size
-            applySize()
+            setSizeOnViews(sizeIndex)
+            if (viewAttached) windowManager.updateViewLayout(floatingView, windowParams)
         }
     }
 
-    private fun applySize() {
-        val sizePx = dp(sizes[sizeIndex])
+    private fun setSizeOnViews(index: Int) {
+        val sizePx = dp(sizes[index])
 
-        // 更新表盘和指针尺寸
-        listOf(compassDial, compassNeedle).forEach { view ->
-            view.layoutParams = FrameLayout.LayoutParams(sizePx, sizePx).also {
-                it.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-            }
-        }
+        val dialLp = FrameLayout.LayoutParams(sizePx, sizePx)
+        dialLp.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        compassDial.layoutParams = dialLp
 
-        // 更新信息栏宽度
-        infoBar.layoutParams = FrameLayout.LayoutParams(sizePx, FrameLayout.LayoutParams.WRAP_CONTENT).also {
-            it.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-            it.bottomMargin = dp(8)
-        }
+        val needleLp = FrameLayout.LayoutParams(sizePx, sizePx)
+        needleLp.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        compassNeedle.layoutParams = needleLp
 
-        // 字号随尺寸变化
-        val textSize = when (sizeIndex) {
+        val barLp = FrameLayout.LayoutParams(sizePx, FrameLayout.LayoutParams.WRAP_CONTENT)
+        barLp.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+        barLp.bottomMargin = dp(6)
+        infoBar.layoutParams = barLp
+
+        val textSize = when (index) {
             0    -> 10f
-            1    -> 14f
-            else -> 18f
+            1    -> 13f
+            else -> 17f
         }
         tvDegree.textSize    = textSize
         tvDirection.textSize = textSize
-
-        windowManager.updateViewLayout(floatingView, windowParams)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -217,7 +221,10 @@ class FloatingCompassService : Service(), SensorEventListener {
 
     override fun onDestroy() {
         sensorManager.unregisterListener(this)
-        if (::floatingView.isInitialized) windowManager.removeView(floatingView)
+        if (viewAttached) {
+            try { windowManager.removeView(floatingView) } catch (e: Exception) { e.printStackTrace() }
+            viewAttached = false
+        }
         super.onDestroy()
     }
 }
