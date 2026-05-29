@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- 北（红色）指针 - 细长菱形 -->
+    <path android:fillColor="#FF3B30"
+        android:pathData="M100,30 L106,98 L100,94 L94,98 Z"/>
+    <!-- 北指针高光 -->
+    <path android:fillColor="#FF6B6B"
+        android:pathData="M100,30 L103,98 L100,94 Z"/>
+
+    <!-- 南（白色）指针 -->
+    <path android:fillColor="#E8E8E8"
+        android:pathData="M100,170 L106,102 L100,106 L94,102 Z"/>
+    <!-- 南指针阴影 -->
+    <path android:fillColor="#AAAAAA"
+        android:pathData="M100,170 L103,102 L100,106 Z"/>
+
+    <!-- 中心装饰圆 外圈 -->
+    <path android:fillColor="#C9A227"
+        android:pathData="M100,91 C104.971,91 109,95.029 109,100 C109,104.971 104.971,109 100,109 C95.029,109 91,104.971 91,100 C91,95.029 95.029,91 100,91 Z"/>
+    <!-- 中心圆 内圈 -->
+    <path android:fillColor="#1C2128"
+        android:pathData="M100,94 C102.761,94 105,96.239 105,99 C105,101.761 102.761,104 100,104 C97.239,104 95,101.761 95,99 C95,96.239 97.239,94 100,94 Z"/>
+    <!-- 中心点 -->
+    <path android:fillColor="#C9A227"
+        android:pathData="M100,97 C101.105,97 102,97.895 102,99 C102,100.105 101.105,101 100,101 C98.895,101 98,100.105 98,99 C98,97.895 98.895,97 100,97 Z"/>
+
+</vector>

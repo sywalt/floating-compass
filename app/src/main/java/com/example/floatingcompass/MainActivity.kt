@@ -1,6 +1,8 @@
 package com.example.floatingcompass
 
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val tvStatus = findViewById<TextView>(R.id.tvStatus)
 
         updateStatus(tvStatus)
+        checkSensorWarning(tvStatus)
 
         btnStart.setOnClickListener {
             if (checkOverlayPermission()) {
@@ -37,8 +40,16 @@ class MainActivity : AppCompatActivity() {
 
         btnStop.setOnClickListener {
             stopService(Intent(this, FloatingCompassService::class.java))
-            Toast.makeText(this, R.string.service_stopped, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.service_stopped), Toast.LENGTH_SHORT).show()
             updateStatus(tvStatus)
+        }
+    }
+
+    private fun checkSensorWarning(tvStatus: TextView) {
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null) {
+            tvStatus.text = getString(R.string.no_sensor)
+            tvStatus.setTextColor(0xFFFF6B6B.toInt())
         }
     }
 
@@ -46,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         val hasPermission = checkOverlayPermission()
         tvStatus.text = getString(
             if (hasPermission) R.string.status_granted else R.string.status_denied
+        )
+        tvStatus.setTextColor(
+            if (hasPermission) 0xFF3FB950.toInt() else 0xFFFF6B6B.toInt()
         )
     }
 
@@ -57,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Toast.makeText(this, R.string.permission_hint, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.permission_hint), Toast.LENGTH_LONG).show()
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:$packageName")
@@ -69,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startFloatingService() {
         startService(Intent(this, FloatingCompassService::class.java))
-        Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.service_started), Toast.LENGTH_SHORT).show()
     }
 
     @Deprecated("Deprecated in Java")
@@ -79,13 +93,15 @@ class MainActivity : AppCompatActivity() {
             if (checkOverlayPermission()) {
                 startFloatingService()
             } else {
-                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateStatus(findViewById(R.id.tvStatus))
+        val tvStatus = findViewById<TextView>(R.id.tvStatus)
+        updateStatus(tvStatus)
+        checkSensorWarning(tvStatus)
     }
 }

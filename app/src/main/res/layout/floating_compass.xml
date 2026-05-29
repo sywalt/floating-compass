@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="130dp"
-    android:layout_height="130dp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/compass_background"
-    android:alpha="0.93"
-    android:elevation="8dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="230dp">
 
+    <!-- 圆形指南针表盘（固定不转） -->
+    <ImageView
+        android:id="@+id/compassDial"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/compass_dial"
+        android:layout_gravity="top|center_horizontal"/>
+
+    <!-- 指针（跟随方向旋转） -->
     <ImageView
         android:id="@+id/compassNeedle"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/ic_compass_needle"
-        android:layout_marginBottom="4dp"
-        android:contentDescription="指南针指针"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/compass_needle_new"
+        android:layout_gravity="top|center_horizontal"/>
 
-    <TextView
-        android:id="@+id/tvDegree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0°"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:textStyle="bold"/>
+    <!-- 底部信息栏 -->
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#CC1C2128">
 
-    <TextView
-        android:id="@+id/tvDirection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="北 N"
-        android:textColor="#FFD700"
-        android:textSize="11sp"/>
+        <TextView
+            android:id="@+id/tvDegree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0°"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="北"
+            android:textColor="#C9A227"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</FrameLayout>

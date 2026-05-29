@@ -26,6 +26,8 @@ class FloatingCompassService : Service(), SensorEventListener {
     private val gravity = FloatArray(3)
     private val geomagnetic = FloatArray(3)
     private var currentAzimuth = 0f
+    private var hasGravity = false
+    private var hasMagnetic = false
 
     private lateinit var compassNeedle: ImageView
     private lateinit var tvDegree: TextView
@@ -54,6 +56,12 @@ class FloatingCompassService : Service(), SensorEventListener {
         tvDegree = floatingView.findViewById(R.id.tvDegree)
         tvDirection = floatingView.findViewById(R.id.tvDirection)
 
+        // 检测传感器是否可用
+        if (magnetometer == null) {
+            tvDegree.text = "N/A"
+            tvDirection.text = "无磁力计"
+        }
+
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
@@ -68,8 +76,8 @@ class FloatingCompassService : Service(), SensorEventListener {
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
-            x = 60
-            y = 200
+            x = 40
+            y = 160
         }
 
         var initialX = 0
@@ -81,12 +89,9 @@ class FloatingCompassService : Service(), SensorEventListener {
         floatingView.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    initialX = params.x
-                    initialY = params.y
-                    initialTouchX = event.rawX
-                    initialTouchY = event.rawY
-                    isDragging = false
-                    true
+                    initialX = params.x; initialY = params.y
+                    initialTouchX = event.rawX; initialTouchY = event.rawY
+                    isDragging = false; true
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = (event.rawX - initialTouchX).toInt()
@@ -122,13 +127,17 @@ class FloatingCompassService : Service(), SensorEventListener {
                 gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0]
                 gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1]
                 gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2]
+                hasGravity = true
             }
             Sensor.TYPE_MAGNETIC_FIELD -> {
                 geomagnetic[0] = alpha * geomagnetic[0] + (1 - alpha) * event.values[0]
                 geomagnetic[1] = alpha * geomagnetic[1] + (1 - alpha) * event.values[1]
                 geomagnetic[2] = alpha * geomagnetic[2] + (1 - alpha) * event.values[2]
+                hasMagnetic = true
             }
         }
+
+        if (!hasGravity || !hasMagnetic) return
 
         val R = FloatArray(9)
         val I = FloatArray(9)
@@ -143,8 +152,9 @@ class FloatingCompassService : Service(), SensorEventListener {
             currentAzimuth += delta * 0.15f
             currentAzimuth = (currentAzimuth + 360) % 360
 
+            // 表盘固定，指针转动（反转角度使N始终指北）
             compassNeedle.rotation = -currentAzimuth
-            tvDegree.text = "${currentAzimuth.toInt()}"
+            tvDegree.text = "${currentAzimuth.toInt()}°"
             tvDirection.text = getDirection(currentAzimuth)
         }
     }
@@ -152,21 +162,19 @@ class FloatingCompassService : Service(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     private fun getDirection(degrees: Float): String = when {
-        degrees < 22.5 || degrees >= 337.5 -> "N"
-        degrees < 67.5  -> "NE"
-        degrees < 112.5 -> "E"
-        degrees < 157.5 -> "SE"
-        degrees < 202.5 -> "S"
-        degrees < 247.5 -> "SW"
-        degrees < 292.5 -> "W"
-        else            -> "NW"
+        degrees < 22.5 || degrees >= 337.5 -> "北"
+        degrees < 67.5  -> "东北"
+        degrees < 112.5 -> "东"
+        degrees < 157.5 -> "东南"
+        degrees < 202.5 -> "南"
+        degrees < 247.5 -> "西南"
+        degrees < 292.5 -> "西"
+        else            -> "西北"
     }
 
     override fun onDestroy() {
         sensorManager.unregisterListener(this)
-        if (::floatingView.isInitialized) {
-            windowManager.removeView(floatingView)
-        }
+        if (::floatingView.isInitialized) windowManager.removeView(floatingView)
         super.onDestroy()
     }
 }

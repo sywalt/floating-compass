@@ -5,23 +5,31 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp"
-    android:background="#F5F5F5">
+    android:background="#0D1117">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="&#129517;"
-        android:textSize="64sp"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="72sp"
+        android:layout_marginBottom="12dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="26sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#1A1A2E"
-        android:layout_marginBottom="8dp"/>
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全局悬浮 · 可自由拖动"
+        android:textSize="13sp"
+        android:textColor="#8B949E"
+        android:layout_marginBottom="36dp"/>
 
     <TextView
         android:id="@+id/tvStatus"
@@ -29,34 +37,35 @@
         android:layout_height="wrap_content"
         android:text="@string/status_denied"
         android:textSize="14sp"
-        android:textColor="#555555"
-        android:layout_marginBottom="32dp"/>
+        android:textColor="#8B949E"
+        android:layout_marginBottom="36dp"/>
 
     <Button
         android:id="@+id/btnStart"
-        android:layout_width="220dp"
+        android:layout_width="240dp"
         android:layout_height="52dp"
         android:text="@string/btn_start"
-        android:textSize="16sp"
-        android:backgroundTint="#1A1A2E"
-        android:layout_marginBottom="16dp"/>
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#238636"
+        android:layout_marginBottom="12dp"/>
 
     <Button
         android:id="@+id/btnStop"
-        android:layout_width="220dp"
+        android:layout_width="240dp"
         android:layout_height="52dp"
         android:text="@string/btn_stop"
-        android:textSize="16sp"
-        android:backgroundTint="#888888"/>
+        android:textSize="15sp"
+        android:backgroundTint="#21262D"
+        android:textColor="#8B949E"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hint_text"
         android:textSize="12sp"
-        android:textColor="#AAAAAA"
+        android:textColor="#484F58"
         android:gravity="center"
-        android:layout_marginTop="32dp"
-        android:paddingHorizontal="16dp"/>
+        android:layout_marginTop="36dp"/>
 
 </LinearLayout>
