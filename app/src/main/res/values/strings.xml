@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">悬浮指南针</string>
+    <string name="app_name">FLoating Compass</string>
+    <string name="permission_hint">Please enable Display over other apps permission in Settings</string>
+    <string name="service_started">Floating compass started</string>
+    <string name="service_stopped">Floating compass stopped</string>
+    <string name="permission_denied">Overlay permission is required</string>
+    <string name="status_granted">Permission granted</string>
+    <string name="status_denied">Permission not granted</string>
+    <string name="btn_start">Start Floating Compass</string>
+    <string name="btn_stop">Stop Floating Compass</string>
+    <string name="hint_text">After starting, switch to any app and the compass will stay visible</string>
 </resources>

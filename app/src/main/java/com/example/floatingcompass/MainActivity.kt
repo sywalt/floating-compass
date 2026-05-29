@@ -37,14 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         btnStop.setOnClickListener {
             stopService(Intent(this, FloatingCompassService::class.java))
-            Toast.makeText(this, "悬浮指南针已关闭", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.service_stopped, Toast.LENGTH_SHORT).show()
             updateStatus(tvStatus)
         }
     }
 
     private fun updateStatus(tvStatus: TextView) {
         val hasPermission = checkOverlayPermission()
-        tvStatus.text = if (hasPermission) "✅ 悬浮窗权限已授予" else "❌ 尚未授予悬浮窗权限"
+        tvStatus.text = getString(
+            if (hasPermission) R.string.status_granted else R.string.status_denied
+        )
     }
 
     private fun checkOverlayPermission(): Boolean {
@@ -55,18 +57,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Toast.makeText(this, "请在设置中开启"显示在其他应用上层"权限", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.permission_hint, Toast.LENGTH_LONG).show()
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:$packageName")
             )
+            @Suppress("DEPRECATION")
             startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION)
         }
     }
 
     private fun startFloatingService() {
         startService(Intent(this, FloatingCompassService::class.java))
-        Toast.makeText(this, "🧭 悬浮指南针已启动", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.service_started, Toast.LENGTH_SHORT).show()
     }
 
     @Deprecated("Deprecated in Java")
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             if (checkOverlayPermission()) {
                 startFloatingService()
             } else {
-                Toast.makeText(this, "需要悬浮窗权限才能运行", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show()
             }
         }
     }

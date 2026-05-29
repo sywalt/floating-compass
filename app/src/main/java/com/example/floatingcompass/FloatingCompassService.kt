@@ -26,7 +26,6 @@ class FloatingCompassService : Service(), SensorEventListener {
     private val gravity = FloatArray(3)
     private val geomagnetic = FloatArray(3)
     private var currentAzimuth = 0f
-    private var targetAzimuth = 0f
 
     private lateinit var compassNeedle: ImageView
     private lateinit var tvDegree: TextView
@@ -73,7 +72,6 @@ class FloatingCompassService : Service(), SensorEventListener {
             y = 200
         }
 
-        // 支持拖动
         var initialX = 0
         var initialY = 0
         var initialTouchX = 0f
@@ -137,17 +135,16 @@ class FloatingCompassService : Service(), SensorEventListener {
         if (SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) {
             val orientation = FloatArray(3)
             SensorManager.getOrientation(R, orientation)
-            targetAzimuth = ((Math.toDegrees(orientation[0].toDouble()).toFloat() + 360) % 360)
+            val target = ((Math.toDegrees(orientation[0].toDouble()).toFloat() + 360) % 360)
 
-            // 平滑插值，避免抖动
-            var delta = targetAzimuth - currentAzimuth
+            var delta = target - currentAzimuth
             if (delta > 180) delta -= 360
             if (delta < -180) delta += 360
             currentAzimuth += delta * 0.15f
             currentAzimuth = (currentAzimuth + 360) % 360
 
             compassNeedle.rotation = -currentAzimuth
-            tvDegree.text = "${currentAzimuth.toInt()}°"
+            tvDegree.text = "${currentAzimuth.toInt()}"
             tvDirection.text = getDirection(currentAzimuth)
         }
     }
@@ -155,14 +152,14 @@ class FloatingCompassService : Service(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     private fun getDirection(degrees: Float): String = when {
-        degrees < 22.5 || degrees >= 337.5 -> "北 N"
-        degrees < 67.5  -> "东北 NE"
-        degrees < 112.5 -> "东 E"
-        degrees < 157.5 -> "东南 SE"
-        degrees < 202.5 -> "南 S"
-        degrees < 247.5 -> "西南 SW"
-        degrees < 292.5 -> "西 W"
-        else            -> "西北 NW"
+        degrees < 22.5 || degrees >= 337.5 -> "N"
+        degrees < 67.5  -> "NE"
+        degrees < 112.5 -> "E"
+        degrees < 157.5 -> "SE"
+        degrees < 202.5 -> "S"
+        degrees < 247.5 -> "SW"
+        degrees < 292.5 -> "W"
+        else            -> "NW"
     }
 
     override fun onDestroy() {
