@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- 外圈刻度环 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFD700"
+        android:strokeWidth="1"
+        android:pathData="M32,4 A28,28 0 1,1 31.99,4 Z"/>
+
+    <!-- 北 (红色) 指针 -->
+    <path
+        android:fillColor="#FF3B30"
+        android:pathData="M32,8 L36,32 L32,30 L28,32 Z"/>
+
+    <!-- 南 (白色) 指针 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M32,56 L36,32 L32,34 L28,32 Z"/>
+
+    <!-- 中心圆 -->
+    <circle
+        android:fillColor="#FFD700"
+        android:cx="32"
+        android:cy="32"
+        android:r="3.5"/>
+
+    <!-- N 标记点 -->
+    <circle
+        android:fillColor="#FF3B30"
+        android:cx="32"
+        android:cy="7"
+        android:r="2"/>
+
+    <!-- S 标记点 -->
+    <circle
+        android:fillColor="#AAAAAA"
+        android:cx="32"
+        android:cy="57"
+        android:r="2"/>
+
+    <!-- E 标记点 -->
+    <circle
+        android:fillColor="#AAAAAA"
+        android:cx="57"
+        android:cy="32"
+        android:r="2"/>
+
+    <!-- W 标记点 -->
+    <circle
+        android:fillColor="#AAAAAA"
+        android:cx="7"
+        android:cy="32"
+        android:r="2"/>
+
+</vector>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="130dp"
+    android:layout_height="130dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/compass_background"
+    android:alpha="0.93"
+    android:elevation="8dp">
+
+    <ImageView
+        android:id="@+id/compassNeedle"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_compass_needle"
+        android:layout_marginBottom="4dp"
+        android:contentDescription="指南针指针"/>
+
+    <TextView
+        android:id="@+id/tvDegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0°"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="北 N"
+        android:textColor="#FFD700"
+        android:textSize="11sp"/>
+
+</LinearLayout>
